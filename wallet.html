@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Wallet</title>
+</head>
+<body>
+
+<section class="section">
+
+    <div class="wrapper">
+
+        <div class="container">
+            <h2 class="section__title">Wallet Dashboard</h2>
+            <div id="app" class="grid">
+                <!-- Start -->
+                <div class="grid-item col-1 summary" id="summary">
+                    <h3 class="grid-item__title">Summary</h3>
+
+                    <div class="summary-stats">
+                        <p class="summary__text">Balance: <br><span class="number" id="balance_span">50 000</span>
+                            рублей.</p>
+                        <p class="summary__text">Income: <br><span class="green number" id="income_span">42 000</span>
+                            рублей.</p>
+                        <p class="summary__text">Expenses: <br><span class="red number" id="expenses_span">8 000</span>
+                            рублей.</p>
+                    </div>
+                </div>
+
+                <div class="grid-item col-1 categories" id="categories">
+                    <h3 class="grid-item__title">Categories</h3>
+                </div>
+
+                <div class="grid-item col-1 income" id="income">
+                    <h3 class="grid-item__title">Income</h3>
+
+                    <div class="form">
+                        <div class="form-group">
+
+                            <div class="form-input">
+                                <input type="text" id="incomeInput" class="form__input" placeholder="Income">
+                            </div>
+                            <div class="form-input">
+                                <input type="date" id="incomeInputDate" class="form__input">
+                            </div>
+                        </div>
+
+                        <button class="button">Add new income</button>
+
+                    </div>
+                </div>
+                <div class="grid-item col-2 expenses" id="expenses">
+                    <h3 class="grid-item__title">Expenses</h3>
+                    <div class="form">
+                        <div class="form-group">
+
+                            <div class="form-input">
+                                <input type="text" id="expensesInput" class="form__input" placeholder="Income">
+                            </div>
+                            <div class="form-input">
+                                <input type="date" id="expensesInputDate" class="form__input">
+                            </div>
+                            <div class="form-input">
+                                <label for="">Category</label>
+                                <select name="" id="">
+                                    <option value="food">Food</option>
+                                    <option value="food">Food</option>
+                                    <option value="food">Food</option>
+                                    <option value="food">Food</option>
+                                    <option value="food">Food</option>
+                                    <option value="food">Food</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="button">Add new expenses</button>
+
+                    </div>
+                </div>
+
+                <div class="grid-item col-1 settings" id="settings">
+                    <h3 class="grid-item__title">Settings</h3>
+                    <div class="group flex">
+                        <input type="text" placeholder="New password" class="form__input">
+                        <div class="group-buttons">
+                            <button class="button">Change</button>
+                            <button class="button button--danger">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <button class="button button--logout">Log out</button>
+                    </div>
+                </div>
+
+                <div class="grid-item col-3 stats" id="stats">
+                    <h3 class="grid-item__title">Statistics</h3>
+
+                    <div class="filter">
+                        <button class="button filter__button _active" data-type="day">Per Day</button>
+                        <button class="button filter__button" data-type="week">Per Week</button>
+                        <button class="button filter__button" data-type="month">Per Month</button>
+                        <button class="button button--danger filter__button" data-type="clear">Clear</button>
+                    </div>
+
+                    <ul class="list">
+<!--                        <li class="list-item income">-->
+<!--                            [Income] Зарплата - 25 000 рублей. (30.10.2021)-->
+<!--                        </li>-->
+<!--                        <li class="list-item income">-->
+<!--                            [Income] Зарплата - 25 000 рублей. (30.10.2021)-->
+<!--                        </li>-->
+<!--                        <li class="list-item expenses">-->
+<!--                            [Income] Зарплата - 25 000 рублей. (30.10.2021)-->
+<!--                        </li>-->
+<!--                        <li class="list-item income">-->
+<!--                            [Income] Зарплата - 25 000 рублей. (30.10.2021)-->
+<!--                        </li>-->
+                    </ul>
+                </div>
+                <!-- End -->
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="scripts/app.js"></script>
+
+</body>
+</html>
