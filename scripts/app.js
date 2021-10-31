@@ -1,98 +1,57 @@
 const PATH = location.pathname;
+
 const PASSWORD = localStorage.getItem("code") === null ? "0000" : JSON.parse(localStorage.getItem('code'));
 
-if (localStorage.getItem('isAuth') === null) {
-    localStorage.setItem('isAuth', JSON.stringify(false));
+if (localStorage.getItem('auth') === null) {
+    localStorage.setItem('auth', JSON.stringify(false));
 }
 
-if (PATH.match("index.html")) {
-    if (JSON.parse(localStorage.getItem("isAuth")) === true) {
-        location.href = location.origin + '/wsr-wallet/wallet.html';
+if (PATH.match('index.html')) {
+
+    if (JSON.parse(localStorage.getItem('auth')) === true) {
+        location.href = location.origin + "/wsr-wallet/wallet.html";
     }
 
-    const input = document.querySelector("#authInput");
+    const page = document.getElementById("auth");
 
-    input.addEventListener("input", (e) => {
-        const self = e.target;
+    const passwordInput = page.querySelector("#authInput");
 
-        if (PASSWORD === self.value) {
-            location.href = '/wsr-wallet/wallet.html';
-            localStorage.setItem('isAuth', JSON.stringify(true));
+    passwordInput.addEventListener('input', (e) => {
+        if (e.target.value.trim() === PASSWORD) {
+            localStorage.setItem('auth', JSON.stringify(true));
+            location.href = location.origin + "/wsr-wallet/wallet.html";
         }
     })
 }
 
 if (PATH.match('wallet.html')) {
-    if (JSON.parse(localStorage.getItem("isAuth")) === false) {
-        location.href = location.origin + '/wsr-wallet/index.html';
+    if (JSON.parse(localStorage.getItem('auth')) === false) {
+        location.href = location.origin + "/wsr-wallet/index.html";
     }
-    //
-    // const wallet = {
-    //     history: [
-    //         {
-    //             type: {
-    //                 display: "Доход",
-    //                 value: "income"
-    //             },
-    //             name: "Заробатная плата",
-    //             amount: 30000,
-    //             date: Date.now()
-    //         },
-    //         {
-    //             type: {
-    //                 display: "Расход",
-    //                 value: "expenses"
-    //             },
-    //             name: "Налоги",
-    //             amount: (30000 * 0.13),
-    //             date: new Date().setDate(new Date().getDate() - 14)
-    //         },
-    //         {
-    //             type: {
-    //                 display: "Доход",
-    //                 value: "income"
-    //             },
-    //             name: "Заробатная плата",
-    //             amount: 30000,
-    //             date: new Date().setDate(new Date().getDate() - 3)
-    //         },
-    //         {
-    //             type: {
-    //                 display: "Расход",
-    //                 value: "expenses"
-    //             },
-    //             name: "Налоги",
-    //             amount: (30000 * 0.13),
-    //             date: new Date().setDate(new Date().getDate() - 22)
-    //         },
-    //         {
-    //             type: {
-    //                 display: "Доход",
-    //                 value: "income"
-    //             },
-    //             name: "Заробатная плата",
-    //             amount: 30000,
-    //             date: new Date().setDate(new Date().getDate() - 5)
-    //         },
-    //         {
-    //             type: {
-    //                 display: "Расход",
-    //                 value: "expenses"
-    //             },
-    //             name: "Налоги",
-    //             amount: (30000 * 0.13),
-    //             date: new Date().setMonth(new Date().getMonth() - 2)
-    //         }
-    //     ],
-    //     categories: [
-    //         {display: "Еда", value: 'food'},
-    //         {display: "Автомобиль", value: 'car'},
-    //         {display: "Продукты", value: 'products'},
-    //         {display: "Топливо", value: 'fuel'}
-    //     ]
-    // }
 
-    const wallet = getWallet();
+    // const wallet = getWallet();
+
+
+    const wallet = {
+        history: [
+            {
+                type: {
+                    display: "Доход",
+                    value: "income"
+                },
+                category: {
+                    display: "Еда",
+                    value: 'food'
+                },
+                amount: 25000,
+                date: new Date().setDate(new Date().getDate() - 3)
+            }
+        ],
+        categories: [
+            {display: "Еда", value: 'food'},
+            {display: 'Автомобиль', value: 'car'}
+        ]
+    };
 
     function getWallet() {
         if (localStorage.getItem("wallet") === null) {
@@ -100,13 +59,10 @@ if (PATH.match('wallet.html')) {
                 history: [],
                 categories: [
                     {display: "Еда", value: 'food'},
-                    {display: "Автомобиль", value: 'car'},
-                    {display: "Продукты", value: 'products'},
-                    {display: "Топливо", value: 'fuel'}
+                    {display: 'Автомобиль', value: 'car'}
                 ]
             }));
-
-            return JSON.parse(localStorage.getItem("wallet"));
+            return JSON.parse(localStorage.getItem('wallet'));
         } else {
             return JSON.parse(localStorage.getItem('wallet'));
         }
@@ -120,6 +76,7 @@ if (PATH.match('wallet.html')) {
         return wallet.history.filter((_) => _.type.value === 'income');
     }
 
+
     function getExpenses() {
         if (wallet.history.length === 0) {
             return [];
@@ -128,56 +85,26 @@ if (PATH.match('wallet.html')) {
         return wallet.history.filter((_) => _.type.value === 'expenses');
     }
 
-    function getIncomeBalance() {
-        return getIncome().reduce((prev, current) => prev += current.amount, 0);
-    }
-
-    function getExpensesBalance() {
-        return getExpenses().reduce((prev, current) => prev += current.amount, 0);
-    }
-
     function getBalance() {
         return getIncomeBalance() - getExpensesBalance();
     }
 
-    function getCategoryByValue(category) {
-        return getCategories().filter((_) => _.value === category.toLowerCase())
+    function getIncomeBalance() {
+        return getIncome().reduce((prev, current) => prev += current.amount, 0)
     }
 
-    function getCategoryByName(category) {
-        return getCategories().filter((_) => _.display.toLowerCase() === category.toLowerCase())
-    }
-
-    function getCategories() {
-        return wallet.categories;
-    }
-
-    function getHistory() {
-        return wallet.history;
-    }
-
-    function changePassword(password) {
-        if (password.length >= 4) {
-            localStorage.setItem('code', JSON.stringify(password));
-            return true;
-        }
-
-        return false;
-    }
-
-    function resetPassword() {
-        localStorage.removeItem('code');
-        return true;
+    function getExpensesBalance() {
+        return getExpenses().reduce((prev, current) => prev += current.amount, 0)
     }
 
     function sortByDay(dataset) {
         const day = new Date().setDate(new Date().getDate() - 1);
-        return dataset.filter((data) => data.date >= day)
+        return dataset.filter((data) => data.date >= day);
     }
 
     function sortByWeek(dataset) {
         const week = new Date().setDate(new Date().getDate() - 7);
-        return dataset.filter((data) => data.date >= week)
+        return dataset.filter((data) => data.date >= week);
     }
 
     function sortByMonth(dataset) {
@@ -185,86 +112,105 @@ if (PATH.match('wallet.html')) {
         return dataset.filter((data) => data.date >= month);
     }
 
-    function logout() {
-        if (localStorage.getItem('isAuth') !== null) {
-            localStorage.setItem('isAuth', JSON.stringify(false));
-            location.href = location.origin + '/wsr-wallet/index.html';
-        }
+    function sortByCategory(category, dataset) {
+        return dataset.filter((data) => data.category.value === category);
+    };
+
+    function setIncome(amount, category) {
+
+        console.log(parseInt(amount));
+        console.log(typeof parseInt(amount));
+
+
+
+        // if ( === NaN) {
+        //     alert("Введите число, а не символы!!!");
+        //     return false;
+        // }
+
+        const data = {
+            type: {
+                display: "Доход",
+                value: 'income'
+            },
+            category: {
+                display: category.display,
+                value: category.value
+            },
+            amount: Number(amount),
+            date: new Date().setDate(Date.now())
+        };
+
+        console.log(data);
     }
 
+    function income() {
+        const parent = document.getElementById('income');
 
-    function displayHistory(dataset) {
-        const el = document.getElementById('stats');
-        const list = el.querySelector('ul.list');
+        const input = parent.querySelector('input');
+        const selector = parent.querySelector('select');
+        const button = parent.querySelector('button');
 
-        list.innerHTML = '';
-
-        dataset.map((data, index) => {
-            list.insertAdjacentHTML(`beforeend`, `
-                <li class="list-item ${data.type.value}">[${data.type.display}] ${data.name} - ${data.amount} рублей. (${new Date(data.date).toLocaleDateString()})</li>
-            `);
+        button.addEventListener('click', () => {
+            setIncome(input.value.trim(), {
+                display: selector.options[selector.selectedIndex].textContent,
+                value: selector.options[selector.selectedIndex].value,
+            })
         });
     }
 
-    function displaySummary() {
-        const el = document.getElementById('summary');
+    function renderHistory(dataset = wallet.history) {
+        const history = document.getElementById('history');
+        history.innerHTML = '';
 
-        if (el) {
-            el.querySelector('#balance_span').textContent = getBalance();
-            el.querySelector('#income_span').textContent = getIncomeBalance();
-            el.querySelector('#expenses_span').textContent = getExpensesBalance();
-        }
+        dataset.map((data) => {
+            history.insertAdjacentHTML('beforeend', `
+                <li class="list ${data.type.value}">${data.category.display} - ${data.amount} рублей [${data.date.toLocaleString()}]</li>
+            `);
+        })
     }
 
-    // displayHistory(wallet.history);
-
-    displayHistory(sortByDay(wallet.history));
-
-    document.querySelector('.button--logout').addEventListener('click', logout);
-    displaySummary();
-
-    const settings = document.getElementById('settings');
-    const passwordField = settings.querySelector('.form__input');
-    const passwordButtons = settings.querySelectorAll('button');
-
-    console.log(passwordField);
-
-    for (const button of passwordButtons) {
-        if (button.classList.contains('button--danger')) {
-            button.addEventListener('click', resetPassword);
-        } else {
-            button.addEventListener('click', () => changePassword(passwordField.value.trim()));
-        }
+    function renderSummary() {
+        document.getElementById('balance_span').textContent = getBalance();
+        document.getElementById('income_span').textContent = getIncomeBalance();
+        document.getElementById('expenses_span').textContent = getExpensesBalance();
     }
 
-    const logoutButton = settings.querySelector(".button.button--logout");
-    logoutButton.addEventListener("click", logout);
+    function filter() {
+        const parent = document.getElementById('stats-settings');
 
-    const filter = document.querySelector(".filter");
+        const buttons = parent.querySelectorAll('button');
+        console.log(buttons);
 
-    filter.addEventListener("click", (e) => {
-        const type = e.target.getAttribute('data-type');
-
-        switch (type) {
-            case "day":
-                displayHistory(sortByDay(wallet.history));
-                break;
-
-            case "week":
-                displayHistory(sortByWeek(wallet.history));
-                break;
-
-            case "month":
-                displayHistory(sortByMonth(wallet.history));
-                break;
-
-            case "clear":
-                displayHistory(wallet.history);
-                break;
-
-            default:
-                return;
-                break;
+        for (const button of buttons) {
+            console.log(button);
+            button.addEventListener('click', (e) => {
+                switch (e.target.getAttribute('data-type')) {
+                    case "day":
+                        renderHistory(sortByDay(wallet.history));
+                        break;
+                    case "week":
+                        renderHistory(sortByWeek(wallet.history));
+                        break;
+                    case "month":
+                        renderHistory(sortByMonth(wallet.history));
+                        break;
+                    case "clear":
+                        renderHistory(wallet.history);
+                        break;
+                }
+            })
         }
-    })
+
+        const selector = parent.querySelector("select");
+        selector.addEventListener("change", (e) => {
+            renderHistory(sortByCategory(e.target.options[e.target.selectedIndex].value, wallet.history));
+        })
+    }
+
+
+    income();
+    filter();
+    renderSummary();
+    renderHistory();
 }
